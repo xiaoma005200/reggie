@@ -1,6 +1,7 @@
 package com.xiaoma.reggie.common;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.xiaoma.reggie.util.BaseContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
@@ -25,8 +26,8 @@ public class MyMateObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         metaObject.setValue("createTime", LocalDateTime.now());
         metaObject.setValue("updateTime", LocalDateTime.now());
-
-
+        metaObject.setValue("createUser", BaseContext.getCurrentId());
+        metaObject.setValue("updateUser", BaseContext.getCurrentId());
     }
 
     /**
@@ -35,7 +36,7 @@ public class MyMateObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        metaObject.setValue("createTime", LocalDateTime.now());
+        metaObject.setValue("updateUser", BaseContext.getCurrentId());
         metaObject.setValue("updateTime", LocalDateTime.now());
     }
 }
