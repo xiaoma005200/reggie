@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 
 /**
+ * 服务端给页面响应数据时对数据进行处理，将long型数据进行处理，统一转成字符串，在WebMvcConfig中追加对象转换器
  * 对象映射器:基于jackson将Java对象转为json，或者将json转为Java对象
  * 将JSON解析为Java对象的过程称为 [从JSON反序列化Java对象]
  * 从Java对象生成JSON的过程称为 [序列化Java对象到JSON]

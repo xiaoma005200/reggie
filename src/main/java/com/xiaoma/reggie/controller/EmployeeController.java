@@ -29,7 +29,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/login")
-    public R<Employee> login(HttpServletRequest request, @RequestBody Employee employee){
+    public com.xiaoma.reggie.common.R<Employee> login(HttpServletRequest request, @RequestBody Employee employee){
         //@RequestBody 接收json数据
         //HttpServletRequest 登录成功将用户信息存到session一份 方便获取用户信息
 
@@ -85,18 +85,19 @@ public class EmployeeController {
     public R<String> save(HttpServletRequest request, @RequestBody Employee employee){
         log.info("新增员工信息：{}",employee.toString());
 
-        //设置员工初始密码123456并进行md5加密
+        //1.设置员工初始密码123456并进行md5加密
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
 
-        //设置员工创建时间和更新时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        //2.设置员工创建时间和更新时间
+        //employee.setCreateTime(LocalDateTime.now());
+        //employee.setUpdateTime(LocalDateTime.now());
 
-        //设置当前登录用户的id,从session中获取用到HttpServletRequest
-        Long empId = (Long) request.getSession().getAttribute("employee");
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
+        //3.设置当前登录用户的id,从session中获取用到HttpServletRequest
+        //Long empId = (Long) request.getSession().getAttribute("employee");
+        //employee.setCreateUser(empId);
+        //employee.setUpdateUser(empId);
 
+        //4.返回成功信息
         employeeService.save(employee);
         return R.success("新增员工成功");
     }
@@ -121,12 +122,46 @@ public class EmployeeController {
         if(name != null){
             queryWrapper.like(Employee::getName,name);
         }
-        //添加排序条件--------按更新时间降序排列
+        //3.添加排序条件--------按更新时间降序排列
         queryWrapper.orderByDesc(Employee::getUpdateTime);
 
-        //3.执行查询操作
+        //4.执行查询操作
         employeeService.page(pageInfo,queryWrapper);
         return R.success(pageInfo);
     }
+
+    /**
+     * 根据id修改员工信息，通用方法（启用禁用，修改员工信息）
+     * @param employee
+     * @return
+     */
+    @PutMapping
+    public R<String> update(HttpServletRequest request, @RequestBody Employee employee){
+        log.info(employee.toString());
+
+        //Long empId = (Long)request.getSession().getAttribute("employee");
+        //1.设置更新时间和更新这条记录的人
+        //employee.setUpdateTime(LocalDateTime.now());
+        //employee.setUpdateUser(empId);
+
+        //2.执行更新操作
+        employeeService.updateById(employee);
+        return R.success("员工信息更新成功");
+    }
+
+
+    /**
+     * 根据id修改员工信息第一步，根据id查询员工信息并回显到页面
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public R<Employee> getById(@PathVariable Long id){
+        log.info("获取到当前员工id:"+id);
+        Employee employee = employeeService.getById(id);
+        return R.success(employee);
+    }
+
+
 
 }
