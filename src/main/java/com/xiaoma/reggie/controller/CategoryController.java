@@ -7,10 +7,7 @@ import com.xiaoma.reggie.entity.Category;
 import com.xiaoma.reggie.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -51,4 +48,16 @@ public class CategoryController {
         return R.success(pageInfo);
     }
 
+    /**
+     * 删除菜品分类
+     * @param id
+     * @return
+     */
+    @DeleteMapping
+    public R<String> delete(Long id){
+        log.info("分类id",id);
+        //直接根据id删除-----categoryService.removeById(id);
+        categoryService.remove(id);
+        return R.success("删除菜品分类成功");
+    }
 }

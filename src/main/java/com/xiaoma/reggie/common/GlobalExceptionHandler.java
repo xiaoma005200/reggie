@@ -35,4 +35,18 @@ public class GlobalExceptionHandler {
         //在前端或者客户端返回友好提示
         return R.error("未知错误,无法定位");
     }
+
+    /**
+     * 删除菜品分类时关联有菜品和套餐抛出异常
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(CustomException.class)
+    public R<String> exceptionHandler(CustomException ex){
+        ex.printStackTrace();
+        log.info("错误信息为:{}", ex.getMessage());
+        return R.error(ex.getMessage());
+    }
+
+
 }
