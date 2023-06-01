@@ -23,9 +23,10 @@ public class CategoryController {
      * @return
      */
     @PostMapping
-    public R<String> save(Category category){
+    public R<String> save(@RequestBody Category category){
         log.info("新增菜品分类...");
-        categoryService.save(category);
+        log.info(category.toString());
+//        categoryService.save(category);
         return R.success("新增菜品分类成功....");
     }
 
@@ -59,5 +60,17 @@ public class CategoryController {
         //直接根据id删除-----categoryService.removeById(id);
         categoryService.remove(id);
         return R.success("分类信息删除成功");
+    }
+
+    /**
+     * 根据id修改分类
+     * @param category
+     * @return
+     */
+    @PutMapping
+    public R<String> update(@RequestBody Category category){
+        log.info("菜品信息：{}"+category);
+        categoryService.updateById(category);
+        return R.success("修改分类信息成功");
     }
 }
