@@ -24,6 +24,7 @@ public class MyMateObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void insertFill(MetaObject metaObject) {
+        log.info("执行新增操作，公共数据自动填充...");
         metaObject.setValue("createTime", LocalDateTime.now());
         metaObject.setValue("updateTime", LocalDateTime.now());
         metaObject.setValue("createUser", BaseContext.getCurrentId());
@@ -36,6 +37,7 @@ public class MyMateObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
+        log.info("执行更新操作，公共数据自动填充...");
         metaObject.setValue("updateUser", BaseContext.getCurrentId());
         metaObject.setValue("updateTime", LocalDateTime.now());
     }
